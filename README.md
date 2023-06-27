@@ -3,7 +3,7 @@
 numpad2.ino можно запрограммировать комбинации клавиш для выполнения макросов. В данные момент там запрограммированы коды для большого нумпада для работы в 1с# Arduino
 
 
-![Image alt](https://github.com/bakuma64/Arduino/blob/main/macropad1.png
+![Screenshot](https://github.com/bakuma64/Arduino/blob/main/macropad1.png
 
 ![Image alt](https://github.com/bakuma64/Arduino/blob/main/macropad2.png
 
