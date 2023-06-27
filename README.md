@@ -4,6 +4,8 @@ numpad2.ino можно запрограммировать комбинации �
 
 numpad.ino - код мини нумпада
 
+корпус для печати на зд принтере: https://www.thingiverse.com/thing:5842612
+
 ![macropad1](https://github.com/bakuma64/Arduino/assets/46646555/dffac224-8f60-476e-a5fe-c4ca1eed608b)
 
 ![macropad2](https://github.com/bakuma64/Arduino/assets/46646555/aa6faa43-4b5e-433d-91d4-d480e88d7eee)
