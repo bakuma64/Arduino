@@ -14,6 +14,16 @@
 #define NUMPIXELS 8
 int inByte = 0;
 Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+int demor = 0;
+int  r;
+int g;
+int b;
+
+
+
+void Demo(int r,int g,int b);
+
+unsigned long timing; // Переменная для хранения точки отсчета
 
 // In this File:
 // - KeyboardWrapper
@@ -103,15 +113,14 @@ void KeyboardWrapper::OnKeyDown(uint8_t mod, uint8_t key)
   // коды клавиш находятся в файлах: коды клавиш и коды медиа клавиш
   // mod - считывает нажатие : ctrl-1, alt - 4, shift -2
 
-
-
   // скопировать CTRL+C
   if (c == 142)
   {
     Keyboard.press(KEY_LEFT_CTRL);
     Keyboard.press('c');
-    delay(100);
-    Keyboard.releaseAll();
+    if (millis() - timing > 1000) {
+      Keyboard.releaseAll();
+    }
   }
 
   // вставить CTRL+V
@@ -169,7 +178,6 @@ void KeyboardWrapper::OnKeyDown(uint8_t mod, uint8_t key)
     Keyboard.releaseAll();
   }
 
-
   // развернуть SHIFT+CTRL+NUMPAD(+)
   if (c == 158)
   {
@@ -188,7 +196,6 @@ void KeyboardWrapper::OnKeyDown(uint8_t mod, uint8_t key)
     Keyboard.releaseAll();
   }
 
-
   // SHIFT+F9
   if (c == 157)
   {
@@ -199,7 +206,7 @@ void KeyboardWrapper::OnKeyDown(uint8_t mod, uint8_t key)
   }
 
   // закрыть-открыть служ.сообщения
-  if (c == 166 && peremKEYsluzgebnie == false)
+  if (c == 166 && peremKEYsluzgebnie == false && mod == 0)
   {
     Keyboard.press(KEY_LEFT_CTRL);
     Keyboard.press(KEY_LEFT_SHIFT);
@@ -208,7 +215,7 @@ void KeyboardWrapper::OnKeyDown(uint8_t mod, uint8_t key)
     peremKEYsluzgebnie = true;
     Keyboard.releaseAll();
   }
-  else if (c == 166 && peremKEYsluzgebnie == true)
+  else if (c == 166 && peremKEYsluzgebnie == true && mod == 0)
 
   {
     Keyboard.press(KEY_LEFT_CTRL);
@@ -220,7 +227,7 @@ void KeyboardWrapper::OnKeyDown(uint8_t mod, uint8_t key)
   }
 
   // очистить служ.сообщения
-  if (c == 167)
+  if (c == 167 && mod == 0)
   {
     Keyboard.press(KEY_LEFT_CTRL);
     Keyboard.press(KEY_LEFT_ALT);
@@ -230,7 +237,7 @@ void KeyboardWrapper::OnKeyDown(uint8_t mod, uint8_t key)
   }
 
   // форматирование
-  if (c == 168)
+  if (c == 168 && mod == 0)
   {
     Keyboard.press(KEY_LEFT_CTRL);
     Keyboard.press('a');
@@ -394,8 +401,89 @@ void KeyboardWrapper::OnKeyDown(uint8_t mod, uint8_t key)
     Keyboard.releaseAll();
   }
 
+  //включение красного
+  if (c == 166  && mod == 1)
+  {
+    Keyboard.releaseAll();
+    r = 255;
+    g = 0;
+    b = 0;
+
+    Demo(r, g, b);
+  }
+
+
+
+    //включение зеленого
+  if (c == 167  && mod == 1)
+  {
+    Keyboard.releaseAll();
+    r = 0;
+    g = 255;
+    b = 0;
+
+    Demo(r, g, b);
+  }
+
+    //включение синего
+  if (c == 168  && mod == 1)
+  {
+    Keyboard.releaseAll();
+    r = 0;
+    g = 0;
+    b = 255;
+
+    Demo(r, g, b);
+  }
+
+      //включение фиолетого
+  if (c == 169  && mod == 1)
+  {
+    Keyboard.releaseAll();
+    r = 255;
+    g = 0;
+    b = 255;
+
+    Demo(r, g, b);
+  }
+
+        //включение светло голубого
+  if (c == 170  && mod == 1)
+  {
+    Keyboard.releaseAll();
+    r = 0;
+    g = 255;
+    b = 255;
+
+    Demo(r, g, b);
+  }
+
+         //включение желтого
+  if (c == 171  && mod == 1)
+  {
+    Keyboard.releaseAll();
+    r = 255;
+    g = 255;
+    b = 0;
+
+    Demo(r, g, b);
+  }
+
+           //выключение кубика
+  if (c == 143  && mod == 1)
+  {
+    Keyboard.releaseAll();
+    r = 0;
+    g = 0;
+    b = 0;
+
+    Demo(r, g, b);
+  }
+
+
+
   //запуск yandex music
-  // для запуска необходимо в свойсвах ярлыка выбрать в поле Быстрый вызов нажать клавишу q
+  // для запуска необходимо в свойствах ярлыка выбрать в поле Быстрый вызов нажать клавишу q
   if (c == 189  && mod == 1 )
   {
     Keyboard.press(KEY_LEFT_CTRL);
@@ -419,14 +507,8 @@ void KeyboardWrapper::OnKeyDown(uint8_t mod, uint8_t key)
   if (c == 196)
   {
     Consumer.write(MEDIA_PLAY_PAUSE);
-    //Keyboard.releaseAll();
+    Keyboard.releaseAll();
   }
-
-  /////////////////////////////////////////////////
-
-
-
-
 }
 
 // On KeyUp we release all for PC (otherwise we would need to store a list of keys to release)
@@ -442,21 +524,14 @@ void KeyboardWrapper::PressWrapKey(uint8_t mod, uint8_t key)
 {
   // for some reason the keys from KeyboardReportParser are offset by 136
   uint8_t c = key + 136;
+  demor = 0;
 
 
   // Keyboard.press(wrapKey);
   Serial.println(c);
- 
-  //Serial.println(wrapKey);
-  //Serial.println(normalKeyPressed);
-
-  
-   
-
-
-  
-
-  // }
+  Serial.println(demor);
+  //Serial.println(mod);
+  Serial.println(normalKeyPressed);
 }
 
 //===========================
@@ -497,25 +572,31 @@ KeyboardWrapper Wrapper12(modifierKeys[11]);
 // setup() & loop()
 //==================
 void setup()
+
 {
+
   // safe guard to prevent not beeing able to reprogram arduino
   // on some arduino types that can happen if serial, keyboard and/or mouse input gets sent to pc constantly directly after boot
   pinMode(LED_BUILTIN, OUTPUT);
   pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
-  for (int i = 1; i < 20; i++) {
+  for (int i = 1; i < 8; i++) {
     digitalWrite(LED_BUILTIN, HIGH);
     delay(1000 - (50 * i));
     digitalWrite(LED_BUILTIN, LOW);
+    pixels.setPixelColor(i, pixels.Color(0, i * 30, i * 30));
+    pixels.show();
     delay(50 * i);
+    if (i == 7) {
+      pixels.fill(pixels.Color(0, 150, 255));
+      pixels.show();
+    }
   }
-
   {
     Serial.begin(9600);
-    delay(1000);
     Serial.println("Ready");
-   
     Consumer.begin();
   }
+
   Usb.Init();
 
   Keyboard1.SetReportParser(0, &Wrapper1);
@@ -539,35 +620,34 @@ void loop()
   Light();
 }
 
-void Light(){
-    delay(100);
-     Serial.begin(9600);
-    inByte = Serial.read();
-    if (inByte == '2') { // RU
-     for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
+void Demo(int r,int g,int b) {
 
+  for (int i = 0; i < NUMPIXELS; i++) { // For each pixel...
     // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
     // Here we're using a moderately bright green color:
-    pixels.setPixelColor(i, pixels.Color(0, 150, 0));
-
+    pixels.setPixelColor(i, pixels.Color(r, g, b));
     pixels.show();   // Send the updated pixel colors to the hardware.
-
-    delay(50); // Pause before next pass through loop
+    delay(10); // Pause before next pass through loop
   }
-    } else if (inByte == '1') { // EN
-      for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
+}
 
-    // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
-    // Here we're using a moderately bright green color:
-    pixels.setPixelColor(i, pixels.Color(150, 0, 0));
-    
 
-    pixels.show();   // Send the updated pixel colors to the hardware.
+void Light() {
+  Serial.begin(9600);
+  inByte = Serial.read();
+  if (inByte == '2') { // RU
+    for (int i = 0; i < NUMPIXELS; i++) { // For each pixel...
+      pixels.setPixelColor(i, pixels.Color(0, 255, 5));
+      pixels.show();   // Send the updated pixel colors to the hardware.
+    }
+    delay(10); // Pause before next pass through loop
+  }
+  else if (inByte == '1') { // EN
+    for (int i = 0; i < NUMPIXELS; i++) { // For each pixel...
 
-    delay(50); // Pause before next pass through loop
-  } 
-    } 
-  Serial.println(inByte );
-
- 
+      pixels.setPixelColor(i, pixels.Color(255, 0, 5));
+      pixels.show();   // Send the updated pixel colors to the hardware.
+      delay(10); // Pause before next pass through loop
+    }
+  }
 }
