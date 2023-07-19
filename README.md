@@ -7,6 +7,8 @@ numpad.ino - код мини нумпада
 numpad2withscreen1602.ino - с экраном 16*2. SCL - D3, SDA - D2 на USB HOST SHIELD. Тест выводится на русском. 
 Для русского текста требуется библиотека LCD_1602_RUS-master.
 
+numpad2_ws2812_indikator.ino - подключен индикатор раскладки (русский,английский) на планке с диодами ws2812 - 8 шт
+
 корпус для печати на зд принтере: https://www.thingiverse.com/thing:5842612
 
 ![macropad1](https://github.com/bakuma64/Arduino/assets/46646555/dffac224-8f60-476e-a5fe-c4ca1eed608b)
