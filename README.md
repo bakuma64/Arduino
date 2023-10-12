@@ -13,7 +13,7 @@ numpad2_ws2812_indikator.ino - подключен индикатор раскл�
 
 корпус для печати на зд принтере: https://www.thingiverse.com/thing:5842612
 
-The folder contains files for uploading to Arduino Leonardo or PRO MICRO
+# The folder contains files for uploading to Arduino Leonardo or PRO MICRO
 equipped with USB HOST SHIELD. When you connect an additional keyboard to the USB HOST SHIELD, you can program key combinations in the numpad2.ino code to execute macros. At the moment there are codes programmed there for a large numpad to work in 1c
 
 numpad.ino - mini numpad code
